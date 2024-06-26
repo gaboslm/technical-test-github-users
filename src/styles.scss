@@ -1,0 +1,6 @@
+/* You can add global styles to this file, and also import other style files */
+@import './assets/scss/mixins';
+
+html {
+  @include generate-width-classes('w-', 100); // Example: Generate classes w-1 to w-50
+}

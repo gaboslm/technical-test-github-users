@@ -1,0 +1,45 @@
+<div class="container mt-3">
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+			<div class="d-flex gap-2">
+				<input type="text" class="form-control" formControlName="username" placeholder="Enter username">
+				<button type="submit" class="btn btn-dark d-flex align-items-center gap-2" [disabled]="searchForm.invalid || loading">
+					<span *ngIf="!loading" class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+					<span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+					Search
+				</button>
+			</div>
+			
+      <div *ngIf="searchForm.controls['username'].invalid && (searchForm.controls['username'].dirty || searchForm.controls['username'].touched)" class="text-danger">
+				<div *ngFor="let error of getUsernameErrors()">{{ error }}</div>
+      </div>
+
+    </div>
+  </form>
+	
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+
+  <ul *ngIf="!loading; else skeleton" class="list-group mt-3">
+    <li class="list-group-item" *ngFor="let user of users">
+      <a [routerLink]="['/user', user.login]">{{ user.login }}</a> (ID: {{ user.id }})
+			<span class="badge bg-secondary">{{ user.type }}</span>
+    </li>
+  </ul>
+
+	<ng-template #skeleton>
+		<div class="d-flex flex-column">
+			<div class="skeleton-item w-50"></div>
+			<div class="skeleton-item w-65"></div>
+			<div class="skeleton-item w-58"></div>
+			<div class="skeleton-item w-59"></div>
+			<div class="skeleton-item w-56"></div>
+			<div class="skeleton-item w-70"></div>
+			<div class="skeleton-item w-57"></div>
+			<div class="skeleton-item w-61"></div>
+			<div class="skeleton-item w-52"></div>
+			<div class="skeleton-item w-49"></div>
+		</div>
+	</ng-template>
+</div>

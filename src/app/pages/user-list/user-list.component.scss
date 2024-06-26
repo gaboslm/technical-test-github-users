@@ -1,0 +1,14 @@
+/* Skeleton loader styles */
+.skeleton-item {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  margin: 10.5px 16px;
+  padding: 10px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
