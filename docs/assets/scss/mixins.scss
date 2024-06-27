@@ -1,0 +1,9 @@
+// Mixin to generate width classes w-1 to w-100
+@mixin generate-width-classes($prefix: 'w-', $max-width: 100) {
+  @for $i from 1 through $max-width {
+    $widthPercentage: calc(#{$i} / #{$max-width} * 100%);
+    .#{$prefix}#{$i} {
+      width: $widthPercentage;
+    }
+  }
+}
