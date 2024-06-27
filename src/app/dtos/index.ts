@@ -1,0 +1,1 @@
+export * from './gihub.dto'
