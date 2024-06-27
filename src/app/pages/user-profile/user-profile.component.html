@@ -2,19 +2,45 @@
 	<button (click)="goBack()" class="btn btn-small btn-back mb-3">
     <i class="fas fa-arrow-left"></i>
   </button>
-  <div class="card shadow-sm p-4">
+  <div *ngIf="!loading; else skeleton" class="card shadow-sm p-4">
     <div class="row align-items-center">
       <div class="col-md-3 text-center">
         <img [src]="user.avatar_url" alt="{{ user.login }}" class="img-fluid rounded-circle mb-3" width="150">
       </div>
       <div class="col-md-9">
-        <h2 class="card-title">{{ user.login }}</h2>
+        <div class="d-flex align-items-center gap-2">
+          <h2 class="card-title my-2">{{ user.login }}</h2>
+          <div>
+            <span class="badge bg-secondary">{{ user.type }}</span>
+          </div>
+        </div>
         <p class="card-text mb-1"><strong>ID:</strong> {{ user.id }}</p>
         <p class="card-text mb-1"><strong>Name:</strong> {{ user.name }}</p>
-        <p class="card-text mb-1"><strong>Type:</strong> {{ user.type }}</p>
         <p class="card-text mb-1"><strong>Followers:</strong> {{ user.followers }}</p>
         <p class="card-text mb-1"><strong>Following:</strong> {{ user.following }}</p>
       </div>
     </div>
   </div>
+
+  <ng-template #skeleton>
+    <div class="card shadow-sm p-4">
+      <div class="row align-items-center">
+        <div class="col-md-3 text-center">
+          <div style="width: 138px; height: 138px;">
+            <div class="skeleton-rounded-circle"></div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="d-flex align-items-center gap-2">
+            <div class="skeleton-item w-20 my-3"></div>
+            <div class="skeleton-item w-12"></div>
+          </div>
+          <div class="skeleton-item w-30 mb-2"></div>
+          <div class="skeleton-item w-35 mb-2"></div>
+          <div class="skeleton-item w-20 mb-2"></div>
+          <div class="skeleton-item w-20 mb-2"></div>
+        </div>
+      </div>
+    </div>
+	</ng-template>
 </div>

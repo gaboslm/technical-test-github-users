@@ -17,6 +17,7 @@ export class UserProfileService {
 
   getUserProfile(username: string): Observable<IResult<UserProfileModel>> {
     const url = new URL(`${this.baseUrl}/users/${username}`);
+
     return this.http.get<GitHubUserProfileDTO>(url.toString())
       .pipe(
         map((response: GitHubUserProfileDTO) => {
@@ -32,6 +33,7 @@ export class UserProfileService {
 
   async asyncGetUserProfile(username: string): Promise<IResult<UserProfileModel>> {
     const url = new URL(`${this.baseUrl}/users/${username}`);
+
     return fetch(url.toString())
       .then((response: Response) => {
         const { ok } = response

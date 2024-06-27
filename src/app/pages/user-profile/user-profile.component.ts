@@ -56,8 +56,6 @@ export class UserProfileComponent {
         (data: IResult<UserProfileModel>) => {
           const { success, error } = data
 
-          this.user = success!;
-
           if (error) {
             this.handleError(error);
           }
