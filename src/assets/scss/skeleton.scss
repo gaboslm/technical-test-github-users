@@ -1,0 +1,15 @@
+.skeleton-item {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+	height: 16px;
+	width: 100%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-rounded-circle {
+  background-color: #f0f0f0;
+	height: 100%;
+	width: 100%;
+  border-radius: 100px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
