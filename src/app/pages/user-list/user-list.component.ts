@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { UserListService } from 'src/app/services/user-list/user-list.service';
-import { finalize } from 'rxjs';
 import { IResult } from 'src/app/interfaces';
-import { UserModel } from 'src/app/models';
+import { UserListModel } from 'src/app/models';
+import { GlobalErrorService } from 'src/app/services/errors/global-error.service';
 
 @Component({
   selector: 'app-user-list',
@@ -12,16 +12,24 @@ import { UserModel } from 'src/app/models';
 })
 export class UserListComponent {
   searchForm!: FormGroup;
-  users: UserModel[] = [];
+  users: UserListModel[] = [];
   perPage: number = 10;
   errorMessage: string = '';
   loading: boolean = false;
   skeletonItems: number[] = new Array(10).fill(0).map((_, index) => index + 1);
 
-  constructor(private fb: FormBuilder, private githubService: UserListService) {
+  constructor(
+    private fb: FormBuilder,
+    private userListService: UserListService,
+    private globalErrorService: GlobalErrorService
+  ) {
     this.searchForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(4), this.forbiddenNameValidator(/doublevpartners/i)]]
     });
+  }
+
+  private handleError(message: string) {
+    this.globalErrorService.showError(message ?? 'An error occurred while fetching data.');
   }
 
   forbiddenNameValidator(nameRe: RegExp) {
@@ -60,29 +68,56 @@ export class UserListComponent {
 
     this.loading = true;
 
-    // Using Observables
-    this.githubService.searchUsers(username, this.perPage)
-      .pipe(
-        finalize(() => this.loading = false) // finalize to set loading to false regardless of success or error
-      )
+    this.getUserList(username)
+    //this.asyncGetUserList(username)
+  }
+
+  // Using Observables
+  getUserList(username: string) {
+    this.loading = true;
+
+    this.userListService.searchUsers(username, this.perPage)
       .subscribe(
-        (data: IResult<UserModel[]>) => {
-          this.users = data.success!;
-          this.errorMessage = '';
+        (data: IResult<UserListModel[]>) => {
+          const { success, error } = data
+
+          this.users = success!;
+
+          if (error) {
+            this.handleError(error);
+          }
+
+          if (success) {
+            this.users = success!;
+          }
         },
         (error) => {
-          this.errorMessage = 'Error fetching user data';
+          console.error(error);
+        },
+        () => {
+          this.loading = false;
         }
       );
+  }
 
-    // Using Promises - Don't forget make async onSubmit()
-    // try {
-    //   const { success } = await this.githubService.asyncSearchUsers(username, this.perPage)
-    //   this.users = success!;
-    // } catch (error) {
-    //   this.errorMessage = 'Error fetching user data';
-    // } finally {
-    //   this.loading = false
-    // }
+  // Using Promises
+  async asyncGetUserList(username: string) {
+    try {
+      this.loading = true;
+
+      const { success, error } = await this.userListService.asyncSearchUsers(username, this.perPage)
+
+      if (error) {
+        this.handleError(error);
+      }
+
+      if (success) {
+        this.users = success!;
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading = false
+    }
   }
 }

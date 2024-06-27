@@ -24,7 +24,6 @@
   <ul *ngIf="!loading; else skeleton" class="list-group mt-3">
     <li class="list-group-item" *ngFor="let user of users">
       <a [routerLink]="['/user', user.login]">{{ user.login }}</a> (ID: {{ user.id }})
-			<span class="badge bg-secondary">{{ user.type }}</span>
     </li>
   </ul>
 
