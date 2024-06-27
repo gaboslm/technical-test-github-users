@@ -4,7 +4,7 @@ import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserModel } from 'src/app/models/user.model';
 import { IResult } from 'src/app/interfaces/result.interface';
-import { GitHubUserListDTO } from './user-list.dto';
+import { GitHubUserListDTO } from 'src/app/dtos';
 
 @Injectable({
   providedIn: 'root'
